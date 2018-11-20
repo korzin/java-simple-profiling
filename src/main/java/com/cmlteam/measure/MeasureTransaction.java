@@ -21,12 +21,12 @@ class MeasureTransaction {
 
   public MeasureTransaction(String name) {
     this.name = name;
-    start = System.currentTimeMillis();
+    start = System.nanoTime();
   }
 
   @Override
   public String toString() {
-    double totalSec = durationMillis / 1000.;
+    double totalSec = durationMillis;
 
     StringBuilder sb =
         new StringBuilder("======{{ ")
@@ -39,7 +39,7 @@ class MeasureTransaction {
 
     for (ActionRecord record : records) {
       sb.append("M | ")
-          .append(record.durationMillis / 1000.)
+          .append(record.durationMillis)
           .append("s - ")
           .append(record.actionName)
           .append('\n');
@@ -49,7 +49,7 @@ class MeasureTransaction {
       for (Map.Entry<String, MethodCallStat> entry : methodCalls.entrySet()) {
         MethodCallStat methodCallStat = entry.getValue();
         sb.append("C | ")
-            .append(methodCallStat.durationMillis / 1000.)
+            .append(methodCallStat.durationMillis)
             .append("s - ")
             .append(methodCallStat.callsCount)
             .append(" calls - ")
@@ -70,6 +70,6 @@ class MeasureTransaction {
   }
 
   public void finish() {
-    durationMillis = System.currentTimeMillis() - start;
+    durationMillis = System.nanoTime() - start;
   }
 }

@@ -31,7 +31,7 @@ public class Measure {
     try {
       MeasureTransaction measureTransaction = new MeasureTransaction(transactionName);
       measureStateTL.set(measureTransaction);
-      measureTransaction.t = System.currentTimeMillis();
+      measureTransaction.t = System.nanoTime();
       measureTransaction.t0 = measureTransaction.t;
     } catch (Throwable t) {
       log.warn(t.getMessage());
@@ -50,7 +50,7 @@ public class Measure {
       MeasureTransaction measureTransaction = getMeasureTransaction();
       if (measureTransaction == null) return;
 
-      measureTransaction.t = System.currentTimeMillis();
+      measureTransaction.t = System.nanoTime();
     } catch (Throwable t) {
       log.warn(t.getMessage());
     }
@@ -89,8 +89,8 @@ public class Measure {
       if (measureTransaction == null) return;
 
       measureTransaction.records.add(
-          new ActionRecord(actionName, System.currentTimeMillis() - measureTransaction.t));
-      measureTransaction.t = System.currentTimeMillis();
+          new ActionRecord(actionName, System.nanoTime() - measureTransaction.t));
+      measureTransaction.t = System.nanoTime();
     } catch (Throwable t) {
       log.warn(t.getMessage());
     }
@@ -107,7 +107,7 @@ public class Measure {
       measureTransaction.methodCalls.put(methodName, methodCallStat);
     }
     if (methodCallStat.depth == 0) {
-      methodCallStat.t0 = System.currentTimeMillis();
+      methodCallStat.t0 = System.nanoTime();
     }
     methodCallStat.callsCount++;
     methodCallStat.depth++;
@@ -124,7 +124,7 @@ public class Measure {
     } else {
       methodCallStat.depth--;
       if (methodCallStat.depth == 0) {
-        methodCallStat.durationMillis += System.currentTimeMillis() - methodCallStat.t0;
+        methodCallStat.durationMillis += System.nanoTime() - methodCallStat.t0;
       }
     }
   }
